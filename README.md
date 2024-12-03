@@ -1,6 +1,6 @@
 # NFParser - Automation for Extracting and Processing NF-e Information
 
-**NFparser** is an automation tool developed to simplify the process of extracting data from Brazilian electronic invoices (NF-e), including reading barcodes, downloading XML files, extracting important information and saving data in Excel spreadsheets. This project aims to automate and speed up the processing of electronic invoices in commercial operations.
+**NFParser** is an automation tool developed to simplify the process of extracting data from Brazilian electronic invoices (NF-e), including reading barcodes, downloading XML files, extracting important information and saving data in Excel spreadsheets. This project aims to automate and speed up the processing of electronic invoices in commercial operations.
 
 ## Features
 
