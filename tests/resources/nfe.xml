@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nfeProc xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
+    <NFe>
+        <infNFe versao="4.00">
+            <ide>
+                <dhEmi>2024-11-30T13:23:32-03:00</dhEmi>
+            </ide>
+            <infAdic>
+                <infCpl>Placa: ABC-1234 - KM / HM: 62.876</infCpl>
+            </infAdic>
+            <pag>
+                <detPag>
+                    <vPag>425.01</vPag>
+                </detPag>
+            </pag>
+        </infNFe>
+    </NFe>
+</nfeProc>
