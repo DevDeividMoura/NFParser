@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nfparser"
-version = "0.2.0"
+version = "0.3.0"
 description = "NFParser is a tool to automate data extraction from Brazilian electronic invoices (NF-e), including barcode reading, XML download, data extraction, and saving to Excel, streamlining commercial operations."
 authors = ["DevDeividMoura <deividcarvalhomoura+github@gmail.com>"]
 readme = "README.md"
