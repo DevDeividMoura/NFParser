@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/DevDeividMoura/NFParser/compare/v0.3.0...v0.3.1) (2024-12-05)
+
+
+### Documentation
+
+* Changelog ([13683d9](https://github.com/DevDeividMoura/NFParser/commit/13683d90a8f556ad4be7cf57f1712e03d5e82dc3))
+
 ## [0.3.0](https://github.com/DevDeividMoura/NFParser/compare/v0.2.0...v0.3.0) (2024-12-04)
 
 
