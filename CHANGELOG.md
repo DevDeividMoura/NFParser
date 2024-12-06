@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/DevDeividMoura/NFParser/compare/v0.3.0...v0.4.0) (2024-12-06)
+
+
+### Features
+
+* ✨ add func to extract NFe data and tests ([#6](https://github.com/DevDeividMoura/NFParser/issues/6)) ([8bd1423](https://github.com/DevDeividMoura/NFParser/commit/8bd14238c5f4ffa8a9024ce2783dabede2d63187))
+
+
+### Documentation
+
+* Changelog ([13683d9](https://github.com/DevDeividMoura/NFParser/commit/13683d90a8f556ad4be7cf57f1712e03d5e82dc3))
+
 ## [0.3.0](https://github.com/DevDeividMoura/NFParser/compare/v0.2.0...v0.3.0) (2024-12-04)
 
 
