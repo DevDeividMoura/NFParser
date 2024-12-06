@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
 from unittest.mock import patch
-from src.nfe_manager import fetch_nfe_xml
+from src.nfe_manager import fetch_nfe_xml, extract_nfe_data
 
 # Test resource directory
 RESOURCE_TEST_DIR = Path(__file__).resolve().parent / "resources"
@@ -57,3 +57,66 @@ def test_fetch_nfe_xml_valid_access_key(mock_post):
     # Assert
     assert result == NFE_XML.encode(), "The XML content was not downloaded correctly."
     assert mock_post.call_count == 1, "httpx.post was not called exactly once."
+
+def test_extract_nfe_data():
+    """
+    Test extracting data from the NFe XML content.
+
+    Verifies:
+    - The extracted data matches the expected values.
+    """
+
+    # Arrange
+    expected_data = {
+        "date": "30/11/2024",
+        "amount": "425,01",
+        "plate": "ABC-1234",
+        "km": "62876"
+    }
+
+    # Act
+    data = extract_nfe_data(NFE_XML)
+
+    # Assert
+    assert data == expected_data, "The extracted data does not match the expected data."
+
+def test_extract_nfe_data_missing_plate_km():
+    
+    # Arrange
+    nfe_xml = NFE_XML.replace("ABC-1234", "")
+    nfe_xml = nfe_xml.replace("62876", "")
+
+    expected_data = {
+        "date": "30/11/2024",
+        "amount": "425,01",
+        "plate": "N/A",
+        "km": "N/A"
+    }
+
+    # Act
+    data = extract_nfe_data(nfe_xml)
+
+    # Assert
+    assert data == expected_data, "The extracted data does not match the expected data."
+
+def test_extract_nfe_data_missing_datas():
+        
+    # Arrange
+    nfe_xml = NFE_XML.replace("2024-11-30T13:23:32-03:00", "")
+    nfe_xml = nfe_xml.replace("Placa: ABC-1234 - KM: 62.876", "")
+    nfe_xml = nfe_xml.replace("425.01", "")
+
+    # Act
+    data = extract_nfe_data(nfe_xml)
+
+    # Assert
+    assert data == None, "The extracted data does not match the expected data."
+
+def test_extract_nfe_data_invalid_xml():
+        
+    # Arrange
+    nfe_xml = NFE_XML.replace("<NFe>", "<nfe")
+
+    # Act
+    with pytest.raises(ValueError, match="Invalid XML content"):
+        extract_nfe_data(nfe_xml)

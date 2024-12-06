@@ -1,5 +1,10 @@
+import re
 import httpx
+from datetime import datetime
+import xml.etree.ElementTree as ET
 from httpx import URL, HTTPStatusError
+
+NFE_NAMESPACE = {"nfe": "http://www.portalfiscal.inf.br/nfe"}
 
 def enforce_trailing_slash(url: URL) -> URL:
     """
@@ -61,3 +66,58 @@ def fetch_nfe_xml(access_key: str, base_url: str | URL = "https://ws.meudanfe.co
                 request=e.request,
                 response=e.response,
             )
+        
+def extract_nfe_data(xml_content: str | bytes) -> dict:
+    """
+    Extracts relevant data from the XML content of a NFe.
+
+    Args:
+        xml_content (str | bytes): The content of the NFe XML.
+
+    Returns:
+        dict: A dictionary containing the extracted data.
+    """
+    xml_content = xml_content if isinstance(xml_content, str) else xml_content.decode("utf-8")
+    
+    try:
+        root = ET.fromstring(xml_content)
+    except ET.ParseError as e:
+        raise ValueError("Invalid XML content") from e
+
+    ns = {"nfe": "http://www.portalfiscal.inf.br/nfe"}
+
+    def get_text_from_xpath(xpath: str) -> str:
+        element = root.find(xpath, ns)
+        return element.text if element is not None else None
+
+    def format_date(date_str: str) -> str:
+        try:
+            return datetime.fromisoformat(date_str[:-6]).strftime('%d/%m/%Y') if date_str else None
+        except ValueError:
+            return "Invalid date"
+
+    def format_amount(amount_str: str) -> str:
+        return amount_str.replace('.', ',') if amount_str else None
+
+    def extract_plate_km(info_cpl: str) -> tuple:
+        plate_km = re.findall(r'Placa: ([A-Z0-9\-]+).*KM: ([\d\.,]+)', info_cpl)
+        if plate_km:
+            plate, km = plate_km[0]
+            km = km.replace('.', '')
+            return plate, km
+        return "N/A", "N/A"
+
+    date = format_date(get_text_from_xpath(".//nfe:dhEmi"))
+    amount = format_amount(get_text_from_xpath('.//nfe:pag/nfe:detPag/nfe:vPag'))
+    info_cpl = get_text_from_xpath('.//nfe:infAdic/nfe:infCpl')
+    plate, km = extract_plate_km(info_cpl) if info_cpl else ("N/A", "N/A")
+
+    if all(value for value in (date, amount)):
+        return {
+            "date": date,
+            "amount": amount,
+            "plate": plate,
+            "km": km
+        }
+    
+    return None
